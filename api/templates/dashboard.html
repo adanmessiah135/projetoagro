@@ -1,0 +1,166 @@
+  <!DOCTYPE html>
+  <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cana ML – Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      body {
+        font-family: 'Segoe UI', Arial, sans-serif;
+        margin: 0;
+        background-color: #f8f9fa;
+      }
+
+      header {
+        background-color: #155d27;
+        color: white;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: 22px;
+      }
+
+      nav {
+        background-color: #1b6d30;
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        padding: 10px;
+      }
+
+      nav a {
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.3s;
+      }
+
+      nav a:hover {
+        color: #ffc107;
+      }
+
+      section {
+        display: none;
+        padding: 20px;
+      }
+
+      section.active {
+        display: block;
+      }
+
+      button.logout {
+        background: #dc3545;
+        color: white;
+        border: none;
+        padding: 8px 14px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      button.logout:hover {
+        background: #c82333;
+      }
+
+      .upload-area, .chart-container {
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+      }
+
+      .chart-container canvas {
+        width: 100%;
+        max-height: 400px;
+      }
+    </style>
+  </head>
+  <body>
+
+    <header>
+      <h1>Cana ML – Dashboard de Doenças</h1>
+      <button class="logout" id="logoutButton">Sair</button>
+    </header>
+
+    <nav>
+      <a href="#" data-section="analisar">📷 Analisar Imagem</a>
+      <a href="#" data-section="historico">📜 Histórico</a>
+      <a href="#" data-section="graficos">📊 Gráficos</a>
+    </nav>
+
+    <main>
+      <!-- Seção de análise -->
+<section id="analisar" class="active">
+  <div class="upload-area">
+    <h2>Enviar imagem para análise</h2>
+    <form id="uploadForm">
+      <input type="file" id="fileInput" accept="image/*">
+      <button type="submit">Analisar</button>
+    </form>
+
+    <img id="preview" style="display:none;max-width:100%;margin-top:10px;">
+
+    <div id="result-container" style="display:none;">
+      <h3>Resultado:</h3>
+      <p><strong>Classe:</strong> <span id="classe"></span></p>
+      <p><strong>Confiança:</strong> <span id="confianca"></span></p>
+      <p><strong>Localização:</strong>
+      <span id="coords" style="color:#555; font-size:0.9rem;">(aguardando...)</span>
+      </p>
+      <p id="alerta" style="display:block;"></p>
+
+      <!-- ✅ Barra de confiança -->
+      <div style="background:#e9ecef; border-radius:6px; height:12px; width:100%; margin-top:8px;">
+        <div id="confidence-fill" style="height:12px; width:0%; border-radius:6px; background:#28a745; transition:width 0.6s ease;"></div>
+      </div>
+
+      <p><strong>Faixa:</strong> <span id="faixa" style="font-weight:bold;"></span></p>
+      <p id="interpretacao" style="margin-top:8px; font-style:italic; color:#555;"></p>
+    </div>
+  </div>
+</section>
+
+
+      <!-- Seção histórico -->
+      <section id="historico">
+        <div class="chart-container">
+          <h2>Histórico de Análises</h2>
+          <table id="historyTable">
+            <thead>
+              <tr>
+                <th>ID</th><th>Classe</th><th>Confiança (%)</th><th>Arquivo</th><th>Data</th>
+                <div style="background:#e9ecef; border-radius:6px; height:12px; width:100%; margin-top:8px;">
+                <div id="confidence-fill" style="height:12px; width:0%; border-radius:6px; background:#28a745; transition:width 0.6s ease;"></div>
+                </div>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Seção gráficos -->
+      <section id="graficos">
+        <div class="chart-container">
+          <h2>Distribuição de Classes</h2>
+          <canvas id="classChart"></canvas>
+        </div>
+        <div class="chart-container">
+          <h2>Tendência Temporal</h2>
+          <canvas id="timeChart"></canvas>
+        </div>
+      </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+  </body>
+  </html>
+

@@ -1,0 +1,26 @@
+services:
+  api:
+    build: .
+    container_name: cana-ml-api
+    ports:
+      - "5001:5000"
+    depends_on:
+      - db
+    environment:
+      - DB_USER=root
+      - DB_PASS=root
+      - DB_HOST=db
+      - DB_NAME=cana_ml
+    command: ["/app/api/boot.sh"]
+
+  db:
+    image: mariadb:11
+    container_name: cana-ml-db
+    restart: always
+    environment:
+      - MARIADB_ROOT_PASSWORD=root
+      - MARIADB_DATABASE=cana_ml
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data:/var/lib/mysql

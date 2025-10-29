@@ -1,0 +1,27 @@
+{
+  "ferrugem": {
+    "precision": 0.8913043478260869,
+    "recall": 1.0,
+    "f1-score": 0.9425287356321839,
+    "support": 123.0
+  },
+  "sadia": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1-score": 0.0,
+    "support": 15.0
+  },
+  "accuracy": 0.8913043478260869,
+  "macro avg": {
+    "precision": 0.44565217391304346,
+    "recall": 0.5,
+    "f1-score": 0.47126436781609193,
+    "support": 138.0
+  },
+  "weighted avg": {
+    "precision": 0.7944234404536862,
+    "recall": 0.8913043478260869,
+    "f1-score": 0.84007996001999,
+    "support": 138.0
+  }
+}
